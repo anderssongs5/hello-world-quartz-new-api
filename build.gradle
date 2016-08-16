@@ -1,0 +1,37 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    manifest {
+    	def dateTime = new Date()
+        attributes 'Implementation-Title': 'Usando Quartz para Job Scheduling con nueva API',
+			"Implementation-Version": "1." + dateTime.getTime().toString(),
+		    "Creation-Date": dateTime.toTimestamp().toString(),
+            "Built-JDK": System.getProperty('java.version')
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.2.3'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
